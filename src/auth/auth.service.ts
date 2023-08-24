@@ -33,12 +33,8 @@ export class AuthService {
   }
 
   async register(data: RegisterDto) {
-    // try {
-      const user = await this.usersService.create(data);
-      return user;
-    // } catch (e) {
-    //   throw new BadRequestException(e);
-    // }
+    const user = await this.usersService.create(data);
+    return user;
   }
 
   verifyToken(token: string) {
