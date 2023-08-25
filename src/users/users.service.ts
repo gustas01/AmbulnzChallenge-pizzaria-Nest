@@ -4,6 +4,7 @@ import { RegisterDto } from 'src/auth/dtos/register-dto/register-dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user/user';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -13,6 +14,7 @@ export class UsersService {
 
   async create(registerDto: RegisterDto) {
     let newUser: User = this.usersRepository.create(registerDto);
+    newUser.password = await bcrypt.hash(registerDto.password, await bcrypt.genSalt(10));
     newUser = await this.usersRepository.save(newUser);
     return newUser;
   }

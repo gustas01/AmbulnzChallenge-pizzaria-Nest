@@ -1,9 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignInDto } from './dtos/sign-in-dto/sign-in-dto';
 import { RegisterDto } from './dtos/register-dto/register-dto';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/entities/user/user';
 import { UsersService } from 'src/users/users.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -15,8 +16,8 @@ export class AuthService {
   async signIn(data: SignInDto) {
     const user: User = await this.usersService.read(data.username);
 
-    if (!user || user?.password !== data.password)
-      throw new BadRequestException('Usuário ou senha inválidos!');
+    if (!user || !(await bcrypt.compare(data.password, user?.password)))
+      throw new UnauthorizedException('Usuário ou senha inválidos!');
 
     const payload = { id: user.id, name: user.name, username: user.username };
 
