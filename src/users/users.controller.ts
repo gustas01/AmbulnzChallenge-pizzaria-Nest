@@ -15,8 +15,8 @@ export class UsersController {
   }
 
   @Put(':id')
-  async update(@Param('id', ParseUUIDPipe) id: UUID, @Body() data: UpdateUserDto) {
-    return this.userService.update(id, data);
+  async update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
