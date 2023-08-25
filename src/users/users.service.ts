@@ -2,12 +2,16 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  HttpStatus,
+  HttpException,
+  UseFilters,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user-dto/update-user-dto';
 import { RegisterDto } from 'src/auth/dtos/register-dto/register-dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user/user';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository, TypeORMError } from 'typeorm';
+import { QueryFailedErrorFilter } from 'src/filters/query-failed-error/query-failed-error.filter';
 
 @Injectable()
 export class UsersService {
@@ -16,28 +20,19 @@ export class UsersService {
   ) {}
 
   async create(data: RegisterDto) {
-    try {
-      let newUser: User = this.usersRepository.create(data);
-      newUser = await this.usersRepository.save(newUser);
-      return newUser;
-    } catch (error) {
-      throw new BadRequestException(error.detail);
-    }
+    let newUser: User = this.usersRepository.create(data);
+    newUser = await this.usersRepository.save(newUser);
+    return newUser;
   }
 
   async read(username: string) {
-    try{
+    const user: User = await this.usersRepository.findOne({
+      where: { username },
+    });
 
-      const user: User = await this.usersRepository.findOne({
-        where: { username },
-      });
+    if (!user) throw new NotFoundException('Usuário não encontrado!');
 
-      if (!user) throw new NotFoundException('Usuário não encontrado!');
-
-      return user;
-    } catch (error) {
-      throw new NotFoundException(error);
-    }
+    return user;
   }
 
   async update(id: string, data: UpdateUserDto) {}
