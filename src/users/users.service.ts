@@ -19,7 +19,7 @@ export class UsersService {
     return newUser;
   }
 
-  async read(username: string) {
+  async findOne(username: string) {
     const user: User = await this.usersRepository.findOne({
       where: { username },
     });

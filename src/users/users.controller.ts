@@ -10,8 +10,8 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Get(':id')
-  async read(@Param('id', ParseUUIDPipe) id: UUID) {
-    return this.userService.read(id);
+  async findOne(@Param('id', ParseUUIDPipe) id: UUID) {
+    return this.userService.findOne(id);
   }
 
   @Put(':id')
