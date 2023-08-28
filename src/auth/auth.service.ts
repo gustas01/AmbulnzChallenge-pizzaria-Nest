@@ -21,14 +21,12 @@ export class AuthService {
 
     const payload = { id: user.id, name: user.name, username: user.username };
 
-    return {
-      token: this.jwtService.sign(payload, {
-        expiresIn: '7d',
-        subject: user.id,
-        issuer: 'login',
-        audience: 'users',
-      }),
-    };
+    return this.jwtService.sign(payload, {
+      expiresIn: String(process.env.JWT_EXPIRATION_DATE),
+      subject: user.id,
+      issuer: 'login',
+      audience: 'users',
+    });
   }
 
   async register(data: RegisterDto) {
