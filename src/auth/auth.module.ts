@@ -10,7 +10,7 @@ import { UsersModule } from 'src/users/users.module';
   imports: [
     JwtModule.register({
       global: true,
-      secret: 'sadnqehyw8hj2487hy¨*T@¨&Noianmds',
+      secret: String(process.env.JWT_SECRET_KEY),
     }),
     UsersModule,
   ],

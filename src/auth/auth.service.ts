@@ -14,7 +14,7 @@ export class AuthService {
   ) {}
 
   async signIn(data: SignInDto) {
-    const user: User = await this.usersService.read(data.username);
+    const user: User = await this.usersService.findOne(data.username);
 
     if (!user || !(await bcrypt.compare(data.password, user?.password)))
       throw new UnauthorizedException('Usuário ou senha inválidos!');
