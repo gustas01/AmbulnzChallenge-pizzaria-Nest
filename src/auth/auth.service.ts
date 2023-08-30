@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignInDto } from './dtos/sign-in-dto/sign-in-dto';
 import { RegisterDto } from './dtos/register-dto/register-dto';
 import { JwtService } from '@nestjs/jwt';
@@ -19,7 +19,7 @@ export class AuthService {
     if (!user || !(await bcrypt.compare(signInDto.password, user?.password)))
       throw new UnauthorizedException('Usuário ou senha inválidos!');
 
-    const payload = { id: user.id, name: user.name, username: user.username };
+    const payload = { id: user.id, name: user.name, username: user.username, roles: user.roles };
 
     return this.jwtService.sign(payload, {
       expiresIn: String(process.env.JWT_EXPIRATION_DATE),
@@ -39,9 +39,10 @@ export class AuthService {
       return this.jwtService.verify(token, {
         issuer: 'login',
         audience: 'users',
+        secret: process.env.JWT_SECRET_KEY,
       });
     } catch (error) {
-      throw new BadRequestException(error);
+      throw new UnauthorizedException('Usuário inválido');
     }
   }
 }
