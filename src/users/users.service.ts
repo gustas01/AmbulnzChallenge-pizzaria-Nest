@@ -14,7 +14,7 @@ export class UsersService {
   async create(registerDto: RegisterDto) {
     const user: Partial<User> = registerDto;
 
-    user.role = JSON.stringify(this.roleToRoles(registerDto.role));
+    user.roles = JSON.stringify(this.roleToRoles(registerDto.role));
 
     let newUser: User = this.usersRepository.create(user);
     newUser.password = await bcrypt.hash(registerDto.password, await bcrypt.genSalt(10));
@@ -22,9 +22,9 @@ export class UsersService {
     return newUser;
   }
 
-  async findOne(id: string) {
+  async findOne(username: string) {
     const user: User = await this.usersRepository.findOne({
-      where: { id },
+      where: { username },
     });
 
     if (!user) throw new NotFoundException('Usuário não encontrado!');

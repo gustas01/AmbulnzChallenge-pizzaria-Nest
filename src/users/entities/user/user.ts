@@ -16,5 +16,5 @@ export class User {
   password: string;
 
   @Column({ nullable: false, enum: Role, default: Role.USER })
-  role: string;
+  roles: string;
 }
