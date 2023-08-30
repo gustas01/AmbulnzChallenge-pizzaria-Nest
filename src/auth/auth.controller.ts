@@ -9,8 +9,8 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  async signIn(@Body() data: SignInDto, @Res({ passthrough: true }) response: Response) {
-    response.cookie('token', await this.authService.signIn(data), {
+  async signIn(@Body() signInDto: SignInDto, @Res({ passthrough: true }) response: Response) {
+    response.cookie('token', await this.authService.signIn(signInDto), {
       httpOnly: true,
       secure: true,
       path: '/',
@@ -22,7 +22,7 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() data: RegisterDto) {
-    return this.authService.register(data);
+  async register(@Body() registerDto: RegisterDto) {
+    return this.authService.register(registerDto);
   }
 }

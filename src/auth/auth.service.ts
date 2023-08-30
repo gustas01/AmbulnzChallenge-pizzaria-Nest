@@ -13,10 +13,10 @@ export class AuthService {
     private usersService: UsersService,
   ) {}
 
-  async signIn(data: SignInDto) {
-    const user: User = await this.usersService.findOne(data.username);
+  async signIn(signInDto: SignInDto) {
+    const user: User = await this.usersService.findOne(signInDto.username);
 
-    if (!user || !(await bcrypt.compare(data.password, user?.password)))
+    if (!user || !(await bcrypt.compare(signInDto.password, user?.password)))
       throw new UnauthorizedException('Usuário ou senha inválidos!');
 
     const payload = { id: user.id, name: user.name, username: user.username };
@@ -29,8 +29,8 @@ export class AuthService {
     });
   }
 
-  async register(data: RegisterDto) {
-    const user = await this.usersService.create(data);
+  async register(registerDto: RegisterDto) {
+    const user = await this.usersService.create(registerDto);
     return user;
   }
 
