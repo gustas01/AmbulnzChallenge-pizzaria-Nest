@@ -5,16 +5,19 @@ import { Param, Body } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user-dto/update-user-dto';
 import { UsersService } from './users.service';
 import { Request } from 'express';
+import { Roles } from 'src/decorators/roles/roles.decorator';
+import { Role } from 'src/enums/role/role';
+import { User } from './entities/user/user';
 
 @Controller('users')
 export class UsersController {
   constructor(private userService: UsersService) {}
 
-  @Get(':id')
-  async findOne(@Param('id', ParseUUIDPipe) id: UUID, @Req() request: Request) {
-    //se chegar aqui, é porque passou pelo auth.guard e tem um token válido, então pego o id de
-    //request['users'].id, invés de param
-    return this.userService.findOne(id);
+  @Roles(Role.CEO)
+  @Get()
+  async findOne(@Req() request: Request) {
+    const user: User = request['user'];
+    return this.userService.findOne(user.username);
   }
 
   @Put(':id')
