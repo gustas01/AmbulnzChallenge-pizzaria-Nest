@@ -15,6 +15,6 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
-  @Column({ nullable: false, type: 'enum', enum: Role, default: Role.USER })
-  role: Role;
+  @Column({ nullable: false, enum: Role, default: Role.USER })
+  role: string;
 }
