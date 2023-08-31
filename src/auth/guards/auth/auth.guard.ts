@@ -5,11 +5,10 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/auth/auth.service';
 import { Role } from 'src/enums/role/role';
 import { User } from 'src/users/entities/user/user';
-import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private reflector: Reflector, private authService: AuthService, private usersService: UsersService) {}
+  constructor(private reflector: Reflector, private authService: AuthService) {}
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [

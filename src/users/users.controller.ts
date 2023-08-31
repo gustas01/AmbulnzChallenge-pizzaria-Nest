@@ -20,13 +20,15 @@ export class UsersController {
     return this.userService.findOne(user.username);
   }
 
-  @Put(':id')
-  async update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  @Put()
+  async update(@Req() request: Request, @Body() updateUserDto: UpdateUserDto) {
+    const user: User = request['user'];
+    return this.userService.update(user.id, updateUserDto);
   }
 
-  @Delete(':id')
-  async delete(@Param('id', ParseUUIDPipe) id: UUID) {
-    return this.userService.delete(id);
+  @Delete()
+  async delete(@Req() request: Request) {
+    const user: User = request['user'];
+    return this.userService.delete(user.id);
   }
 }
