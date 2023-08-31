@@ -23,16 +23,20 @@ export class UsersService {
   }
 
   async findOne(username: string) {
-    const user: User = await this.usersRepository.findOne({
-      where: { username },
-    });
+    const user: User = await this.usersRepository.findOneBy({ username });
 
     if (!user) throw new NotFoundException('Usuário não encontrado!');
 
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {}
+  async update(id: string, updateUserDto: Partial<UpdateUserDto>) {
+    if (updateUserDto.password)
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, await bcrypt.genSalt(10));
+
+    await this.usersRepository.update(id, updateUserDto);
+    return this.usersRepository.findOneBy({ id });
+  }
 
   async delete(id: string) {}
 

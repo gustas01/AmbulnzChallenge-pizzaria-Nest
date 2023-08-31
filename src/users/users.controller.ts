@@ -1,7 +1,5 @@
-import { Controller, Delete, Get, Put, Req } from '@nestjs/common';
-import { UUID } from 'crypto';
-import { ParseUUIDPipe } from '@nestjs/common';
-import { Param, Body } from '@nestjs/common';
+import { Controller, Delete, Get, Patch, Req } from '@nestjs/common';
+import { Body } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user-dto/update-user-dto';
 import { UsersService } from './users.service';
 import { Request } from 'express';
@@ -13,16 +11,19 @@ import { User } from './entities/user/user';
 export class UsersController {
   constructor(private userService: UsersService) {}
 
-  @Roles(Role.CEO)
+  @Roles(Role.USER)
   @Get()
   async findOne(@Req() request: Request) {
     const user: User = request['user'];
     return this.userService.findOne(user.username);
   }
 
-  @Put()
-  async update(@Req() request: Request, @Body() updateUserDto: UpdateUserDto) {
+  @Roles(Role.USER)
+  @Patch()
+  async update(@Req() request: Request, @Body() updateUserDto: Partial<UpdateUserDto>) {
     const user: User = request['user'];
+    console.log(user);
+
     return this.userService.update(user.id, updateUserDto);
   }
 
