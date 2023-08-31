@@ -1,6 +1,6 @@
-import { Controller, Delete, Get, Patch, Req } from '@nestjs/common';
+import { Controller, Delete, Get, Patch, Req, BadRequestException } from '@nestjs/common';
 import { Body } from '@nestjs/common';
-import { UpdateUserDto } from './dtos/update-user-dto/update-user-dto';
+import { UpdateUserDto } from './dtos/update-user-dto';
 import { UsersService } from './users.service';
 import { Request } from 'express';
 import { Roles } from 'src/decorators/roles/roles.decorator';
@@ -20,9 +20,11 @@ export class UsersController {
 
   @Roles(Role.USER)
   @Patch()
-  async update(@Req() request: Request, @Body() updateUserDto: Partial<UpdateUserDto>) {
+  async update(@Req() request: Request, @Body() updateUserDto: UpdateUserDto) {
+    if (!Object.keys(updateUserDto).length)
+      throw new BadRequestException('Nenhuma informação fornecida para atualização!');
+
     const user: User = request['user'];
-    console.log(user);
 
     return this.userService.update(user.id, updateUserDto);
   }

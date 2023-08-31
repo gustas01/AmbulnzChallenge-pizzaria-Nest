@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateUserDto } from './dtos/update-user-dto/update-user-dto';
-import { RegisterDto } from 'src/auth/dtos/register-dto/register-dto';
+import { UpdateUserDto } from './dtos/update-user-dto';
+import { CreateUserDto } from 'src/users/dtos/create-user-dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user/user';
 import { Repository } from 'typeorm';
@@ -11,13 +11,13 @@ import { Role } from 'src/enums/role/role';
 export class UsersService {
   constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
 
-  async create(registerDto: RegisterDto) {
-    const user: Partial<User> = registerDto;
+  async create(createUserDto: CreateUserDto) {
+    const user: Partial<User> = createUserDto;
 
-    user.roles = JSON.stringify(this.roleToRoles(registerDto.role));
+    user.roles = JSON.stringify(this.roleToRoles(createUserDto.role));
 
     let newUser: User = this.usersRepository.create(user);
-    newUser.password = await bcrypt.hash(registerDto.password, await bcrypt.genSalt(10));
+    newUser.password = await bcrypt.hash(createUserDto.password, await bcrypt.genSalt(10));
     newUser = await this.usersRepository.save(newUser);
     return newUser;
   }

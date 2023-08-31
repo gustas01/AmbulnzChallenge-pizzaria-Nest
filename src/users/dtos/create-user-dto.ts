@@ -1,7 +1,7 @@
 import { MinLength, IsStrongPassword, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
 import { Role } from 'src/enums/role/role';
 
-export class RegisterDto {
+export class CreateUserDto {
   @MinLength(3)
   @IsNotEmpty()
   name: string;
