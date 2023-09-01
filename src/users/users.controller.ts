@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Patch, Req, BadRequestException } from '@nestjs/common';
+import { Controller, Delete, Get, Patch, Req, BadRequestException, UseFilters } from '@nestjs/common';
 import { Body } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user-dto';
 import { UsersService } from './users.service';
@@ -6,8 +6,10 @@ import { Request } from 'express';
 import { Roles } from 'src/decorators/roles/roles.decorator';
 import { Role } from 'src/enums/role/role';
 import { User } from './entities/user/user';
+import { UserQueryFailedErrorFilter } from 'src/filters/user-query-failed-error/user-query-failed-error.filter';
 
 @Controller('users')
+@UseFilters(UserQueryFailedErrorFilter)
 export class UsersController {
   constructor(private userService: UsersService) {}
 
