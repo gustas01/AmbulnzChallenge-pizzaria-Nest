@@ -9,7 +9,7 @@ export class PizzasService {
   constructor(@InjectRepository(Pizza) private pizzaRepository: Repository<Pizza>) {}
 
   async findAll() {
-    return this.pizzaRepository.find();
+    return this.pizzaRepository.find({ select: { name: true, ingredients: true, price: true } });
   }
 
   async findOne(pizzaname: string) {}

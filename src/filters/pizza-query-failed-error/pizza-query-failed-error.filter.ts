@@ -20,7 +20,7 @@ export class PizzaQueryFailedErrorFilter<T> implements ExceptionFilter {
         break;
       case '42P01':
         status = HttpStatus.SERVICE_UNAVAILABLE;
-        message = 'Entidade inexistente';
+        message = 'Tabela (pizzas) inexistente';
         code = '42P01';
         break;
     }
