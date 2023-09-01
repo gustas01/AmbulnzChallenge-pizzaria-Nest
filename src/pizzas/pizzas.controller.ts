@@ -1,11 +1,10 @@
-import { Controller, Body, Delete, Get, Patch, Post, Req } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Pizza } from './entities/pizza/pizza';
+import { Controller, Body, Delete, Get, Patch, Post, Req, UseFilters } from '@nestjs/common';
 import { PizzasService } from './pizzas.service';
-import { CreatePizzaDto } from './dtos/create-pizza-dto/create-pizza-dto';
+import { CreatePizzaDto } from './dtos/create-pizza-dto';
+import { PizzaQueryFailedErrorFilter } from 'src/filters/pizza-query-failed-error/pizza-query-failed-error.filter';
 
 @Controller('pizzas')
+@UseFilters(PizzaQueryFailedErrorFilter)
 export class PizzasController {
   constructor(private pizzaService: PizzasService) {}
 
