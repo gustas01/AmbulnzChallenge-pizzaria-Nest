@@ -9,7 +9,7 @@ export class PizzaQueryFailedErrorFilter<T> implements ExceptionFilter {
     const request: Request = host.switchToHttp().getRequest<Request>();
 
     let status: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message: string = 'INTERNAL_SERVER_ERROR';
+    let message: string = exception.driverError.detail;
     let code: string = '500';
 
     switch (exception.driverError?.code) {
