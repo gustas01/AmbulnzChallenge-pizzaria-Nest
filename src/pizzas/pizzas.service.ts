@@ -3,6 +3,7 @@ import { Pizza } from './entities/pizza/pizza';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePizzaDto } from './dtos/create-pizza-dto';
+import { UpdatePizzaDto } from './dtos/update-pizza-dto';
 
 @Injectable()
 export class PizzasService {
@@ -21,6 +22,10 @@ export class PizzasService {
     return newPizza;
   }
 
-  async update() {}
+  async update(id: number, updatePizzaDto: Partial<UpdatePizzaDto>) {
+    await this.pizzaRepository.update(id, updatePizzaDto);
+    return this.pizzaRepository.findOneBy({ id });
+  }
+
   async delete() {}
 }
