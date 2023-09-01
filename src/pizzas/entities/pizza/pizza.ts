@@ -8,6 +8,9 @@ export class Pizza {
   @Column({ nullable: false, unique: true })
   name: string;
 
-  @Column({ nullable: false, type: 'decimal', precision: 2 })
+  @Column('decimal', { nullable: false, precision: 5, scale: 2 })
   price: number;
+
+  @Column({ nullable: false })
+  ingredients: string;
 }

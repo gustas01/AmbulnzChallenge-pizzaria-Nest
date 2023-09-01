@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Pizza } from './entities/pizza/pizza';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreatePizzaDto } from './dtos/create-pizza-dto/create-pizza-dto';
+import { CreatePizzaDto } from './dtos/create-pizza-dto';
 
 @Injectable()
 export class PizzasService {
@@ -12,10 +12,11 @@ export class PizzasService {
     return this.pizzaRepository.find();
   }
 
-  async findOne() {}
+  async findOne(pizzaname: string) {}
 
   async create(createPizzaDto: CreatePizzaDto) {
     let newPizza: Pizza = this.pizzaRepository.create(createPizzaDto);
+    newPizza.ingredients = JSON.stringify(newPizza.ingredients);
     newPizza = await this.pizzaRepository.save(newPizza);
     return newPizza;
   }

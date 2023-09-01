@@ -8,4 +8,7 @@ export class CreatePizzaDto {
   @IsDecimal()
   @IsNotEmpty()
   price: number;
+
+  @IsNotEmpty()
+  ingredients: string;
 }
