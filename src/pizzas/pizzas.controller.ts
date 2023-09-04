@@ -16,6 +16,11 @@ export class PizzasController {
     return this.pizzaService.findAll();
   }
 
+  @Get(':pizzaname')
+  async findOne(@Param('pizzaname') pizzaname: string) {
+    return this.pizzaService.findOne(pizzaname);
+  }
+
   // @Roles(Role.MANAGER)
   @Post()
   async create(@Body() createPizzaDto: CreatePizzaDto) {

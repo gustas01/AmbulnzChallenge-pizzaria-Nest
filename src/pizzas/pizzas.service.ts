@@ -14,11 +14,17 @@ export class PizzasService {
       select: { name: true, ingredients: true, price: true },
     });
 
-    pizzas.forEach((el) => (el.ingredients = JSON.parse(el.ingredients)));
-    return pizzas;
+    return pizzas.map((el) => {
+      const ingredients: string[] = JSON.parse(el.ingredients);
+      return { ...el, ingredients };
+    });
   }
 
-  async findOne(pizzaname: string) {}
+  async findOne(pizzaname: string) {
+    const pizza: Pizza = await this.pizzaRepository.findOneBy({ name: pizzaname });
+    pizza.ingredients = JSON.parse(pizza.ingredients);
+    return pizza;
+  }
 
   async create(createPizzaDto: CreatePizzaDto) {
     createPizzaDto.ingredients = JSON.stringify(
