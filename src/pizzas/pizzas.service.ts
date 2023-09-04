@@ -35,5 +35,7 @@ export class PizzasService {
     return this.pizzaRepository.findOneBy({ id });
   }
 
-  async delete() {}
+  async delete(id: number) {
+    return this.pizzaRepository.delete(id);
+  }
 }

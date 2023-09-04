@@ -27,4 +27,10 @@ export class PizzasController {
   async update(@Param('id') id: number, @Body() updatePizzaDto: UpdatePizzaDto) {
     return this.pizzaService.update(id, updatePizzaDto);
   }
+
+  // @Roles(Role.MANAGER)
+  @Delete(':id')
+  async delete(@Param('id') id: number) {
+    return this.pizzaService.delete(id);
+  }
 }
