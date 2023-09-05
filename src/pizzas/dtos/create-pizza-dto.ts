@@ -11,5 +11,5 @@ export class CreatePizzaDto {
   price: number;
 
   @IsNotEmpty()
-  ingredients: string;
+  ingredients: string[];
 }

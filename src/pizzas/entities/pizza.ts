@@ -11,6 +11,6 @@ export class Pizza {
   @Column('decimal', { nullable: false, precision: 5, scale: 2 })
   price: number;
 
-  @Column({ nullable: false })
-  ingredients: string;
+  @Column('varchar', { nullable: false, array: true })
+  ingredients: string[];
 }

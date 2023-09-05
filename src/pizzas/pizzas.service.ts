@@ -10,26 +10,18 @@ export class PizzasService {
   constructor(@InjectRepository(Pizza) private pizzaRepository: Repository<Pizza>) {}
 
   async findAll() {
-    const pizzas: Pizza[] = await this.pizzaRepository.find({
+    return this.pizzaRepository.find({
       select: { name: true, ingredients: true, price: true },
-    });
-
-    return pizzas.map((el) => {
-      const ingredients: string[] = JSON.parse(el.ingredients);
-      return { ...el, ingredients };
     });
   }
 
   async findOne(pizzaname: string) {
     const pizza: Pizza = await this.pizzaRepository.findOneBy({ name: pizzaname });
-    pizza.ingredients = JSON.parse(pizza.ingredients);
     return pizza;
   }
 
   async create(createPizzaDto: CreatePizzaDto) {
-    createPizzaDto.ingredients = JSON.stringify(
-      createPizzaDto.ingredients.split(',').map((el) => el.trim()),
-    );
+    createPizzaDto.ingredients = createPizzaDto.ingredients.map((el) => el.trim());
 
     let newPizza: Pizza = this.pizzaRepository.create(createPizzaDto);
     newPizza = await this.pizzaRepository.save(newPizza);

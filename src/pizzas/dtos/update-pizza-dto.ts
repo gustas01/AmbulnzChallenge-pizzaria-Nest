@@ -13,5 +13,5 @@ export class UpdatePizzaDto {
 
   @IsOptional()
   @IsNotEmpty()
-  ingredients: string;
+  ingredients: string[];
 }
