@@ -15,6 +15,6 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
-  @Column({ nullable: false, enum: Role, default: Role.USER })
-  roles: string;
+  @Column('varchar', { nullable: false, default: [Role.USER], array: true })
+  roles: Role[];
 }

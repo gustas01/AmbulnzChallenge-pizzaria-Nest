@@ -14,7 +14,7 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     const user: Partial<User> = createUserDto;
 
-    user.roles = JSON.stringify(this.roleToRoles(createUserDto.role));
+    if (createUserDto.role) user.roles = this.roleToRoles(createUserDto.role);
 
     let newUser: User = this.usersRepository.create(user);
     newUser.password = await bcrypt.hash(createUserDto.password, await bcrypt.genSalt(10));
