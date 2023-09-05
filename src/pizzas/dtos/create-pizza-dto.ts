@@ -1,4 +1,4 @@
-import { IsDecimal, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, IsNumber, MaxLength, MinLength } from 'class-validator';
 
 export class CreatePizzaDto {
   @MinLength(3)
@@ -6,7 +6,7 @@ export class CreatePizzaDto {
   @IsNotEmpty()
   name: string;
 
-  @IsDecimal()
+  @IsNumber({ allowInfinity: false, allowNaN: false })
   @IsNotEmpty()
   price: number;
 
