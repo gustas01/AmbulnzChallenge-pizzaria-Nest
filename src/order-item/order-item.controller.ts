@@ -24,11 +24,11 @@ export class OrderItemController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrderItemDto: UpdateOrderItemDto) {
-    return this.orderItemService.update(+id, updateOrderItemDto);
+    return this.orderItemService.update(id, updateOrderItemDto);
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.orderItemService.delete(+id);
+    return this.orderItemService.delete(id);
   }
 }

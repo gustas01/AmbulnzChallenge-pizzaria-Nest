@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { UpdateOrderItemDto } from './dto/update-order-item.dto';
 import { OrderItem } from './entities/order-item.entity';
@@ -15,26 +15,35 @@ export class OrderItemService {
 
   async create(createOrderItemDto: CreateOrderItemDto) {
     const pizza = await this.pizzaService.findOne(createOrderItemDto.pizzaname);
+
     const newOrderItem = this.orderItemRepository.create({
       ...createOrderItemDto,
       pizza,
     });
-    return this.orderItemRepository.save(newOrderItem);
+
+    const orderItem = await this.orderItemRepository.save(newOrderItem);
+    delete orderItem.pizza.id;
+    return orderItem;
   }
 
   findAll() {
-    return `This action returns all orderItem`;
+    return this.orderItemRepository.find({ relations: { pizza: true } });
   }
 
   findOne(id: number) {
     return `This action returns a #${id} orderItem`;
   }
 
-  update(id: number, updateOrderItemDto: UpdateOrderItemDto) {
-    return `This action updates a #${id} orderItem`;
+  async update(id: string, updateOrderItemDto: UpdateOrderItemDto) {
+    let pizza = undefined;
+    if (updateOrderItemDto.pizzaname)
+      pizza = await this.pizzaService.findOne(updateOrderItemDto.pizzaname);
+
+    return this.orderItemRepository.update(id, { quantity: updateOrderItemDto.quantity, pizza });
   }
 
-  delete(id: number) {
-    return `This action removes a #${id} orderItem`;
+  async delete(id: string) {
+    await this.orderItemRepository.delete(id);
+    return { msg: 'Item apagado!' };
   }
 }
