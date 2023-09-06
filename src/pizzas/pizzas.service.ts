@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Pizza } from './entities/pizza';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,6 +17,9 @@ export class PizzasService {
 
   async findOne(pizzaname: string) {
     const pizza: Pizza = await this.pizzaRepository.findOneBy({ name: pizzaname });
+
+    if (!pizza) throw new NotFoundException('Pizza não encontrada');
+
     return pizza;
   }
 
@@ -34,6 +37,7 @@ export class PizzasService {
   }
 
   async delete(id: number) {
-    return this.pizzaRepository.delete(id);
+    await this.pizzaRepository.delete(id);
+    return { msg: 'Pizza deletada com sucesso!' };
   }
 }
