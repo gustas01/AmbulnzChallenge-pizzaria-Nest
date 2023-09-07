@@ -1,5 +1,6 @@
+import { Order } from 'src/orders/entities/order';
 import { Pizza } from 'src/pizzas/entities/pizza';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class OrderItem {
@@ -11,4 +12,7 @@ export class OrderItem {
 
   @ManyToOne(() => Pizza)
   pizza: Pizza;
+
+  @ManyToOne(() => Order, { onDelete: 'CASCADE' })
+  order: Order;
 }
