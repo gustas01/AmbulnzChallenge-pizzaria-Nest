@@ -1,5 +1,6 @@
 import { Role } from 'src/enums/role/role';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Order } from 'src/orders/entities/order';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -17,4 +18,7 @@ export class User {
 
   @Column('varchar', { nullable: false, default: [Role.USER], array: true })
   roles: Role[];
+
+  @OneToMany(() => Order, (order) => order.user, { cascade: true })
+  order: Order[];
 }

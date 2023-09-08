@@ -6,24 +6,33 @@ import { User } from './entities/user/user';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/enums/role/role';
+import { OrdersService } from 'src/orders/orders.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private usersRepository: Repository<User>,
+    private orderService: OrdersService,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     const user: Partial<User> = createUserDto;
 
     if (createUserDto.role) user.roles = this.roleToRoles(createUserDto.role);
 
-    let newUser: User = this.usersRepository.create(user);
+    let newUser: User = this.usersRepository.create({ ...user, order: [] });
     newUser.password = await bcrypt.hash(createUserDto.password, await bcrypt.genSalt(10));
+    newUser.order.unshift(this.orderService.create());
     newUser = await this.usersRepository.save(newUser);
+
     return newUser;
   }
 
   async findOne(username: string) {
-    const user: User = await this.usersRepository.findOneBy({ username });
+    const user: User = await this.usersRepository.findOne({
+      relations: { order: true },
+      where: { username },
+    });
 
     if (!user) throw new NotFoundException('Usuário não encontrado!');
 

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/entities/user/user';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('orders')
 export class Order {
@@ -7,4 +8,7 @@ export class Order {
 
   @Column({ default: false })
   paidOff: boolean;
+
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  user: User;
 }
