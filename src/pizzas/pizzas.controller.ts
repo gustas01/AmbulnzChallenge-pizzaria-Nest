@@ -21,19 +21,19 @@ export class PizzasController {
     return this.pizzaService.findOne(pizzaname);
   }
 
-  // @Roles(Role.MANAGER)
+  @Roles(Role.MANAGER)
   @Post()
   async create(@Body() createPizzaDto: CreatePizzaDto) {
     return this.pizzaService.create(createPizzaDto);
   }
 
-  // @Roles(Role.MANAGER)
+  @Roles(Role.MANAGER)
   @Patch(':id')
   async update(@Param('id') id: number, @Body() updatePizzaDto: UpdatePizzaDto) {
     return this.pizzaService.update(id, updatePizzaDto);
   }
 
-  // @Roles(Role.MANAGER)
+  @Roles(Role.MANAGER)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return this.pizzaService.delete(id);

@@ -29,11 +29,13 @@ export class OrderItemController {
     return this.orderItemService.findOne(+id);
   }
 
+  @Roles(Role.USER)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateOrderItemDto: UpdateOrderItemDto) {
     return this.orderItemService.update(id, updateOrderItemDto);
   }
 
+  @Roles(Role.USER)
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.orderItemService.delete(id);
