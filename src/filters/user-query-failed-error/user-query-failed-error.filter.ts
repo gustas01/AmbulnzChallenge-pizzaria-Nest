@@ -20,7 +20,7 @@ export class UserQueryFailedErrorFilter<T> implements ExceptionFilter {
         break;
       case '42P01':
         status = HttpStatus.SERVICE_UNAVAILABLE;
-        message = 'Tabela (users) inexistente';
+        message = exception.message;
         code = '42P01';
         break;
     }
