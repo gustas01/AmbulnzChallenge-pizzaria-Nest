@@ -18,10 +18,10 @@ export class PizzaQueryFailedErrorFilter<T> implements ExceptionFilter {
         message = `Pizza ${request.body.name} já cadastrada!`;
         code = exception.driverError?.code;
         break;
-      case '42P01':
+      default:
         status = HttpStatus.SERVICE_UNAVAILABLE;
-        message = 'Tabela (pizzas) inexistente';
-        code = '42P01';
+        message = exception.message;
+        code = exception.driverError?.code;
         break;
     }
 

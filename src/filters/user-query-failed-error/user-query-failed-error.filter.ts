@@ -18,10 +18,10 @@ export class UserQueryFailedErrorFilter<T> implements ExceptionFilter {
         message = `Username ${request.body.username} já existe!`;
         code = exception.driverError?.code;
         break;
-      case '42P01':
+      default:
         status = HttpStatus.SERVICE_UNAVAILABLE;
         message = exception.message;
-        code = '42P01';
+        code = exception.driverError?.code;
         break;
     }
 
