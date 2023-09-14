@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { Roles } from 'src/decorators/roles/roles.decorator';
 import { Role } from 'src/enums/role/role';
 import { OrdersService } from './orders.service';
-import { User } from 'src/users/entities/user/user';
+import { User } from 'src/users/entities/user';
 
 @Controller('orders')
 export class OrdersController {

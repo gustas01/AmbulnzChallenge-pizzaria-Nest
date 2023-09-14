@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/auth/auth.service';
 import { Role } from 'src/enums/role/role';
-import { User } from 'src/users/entities/user/user';
+import { User } from 'src/users/entities/user';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

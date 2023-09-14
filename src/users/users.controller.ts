@@ -5,7 +5,7 @@ import { UsersService } from './users.service';
 import { Request } from 'express';
 import { Roles } from 'src/decorators/roles/roles.decorator';
 import { Role } from 'src/enums/role/role';
-import { User } from './entities/user/user';
+import { User } from './entities/user';
 import { UserQueryFailedErrorFilter } from 'src/filters/user-query-failed-error/user-query-failed-error.filter';
 
 @Controller('users')

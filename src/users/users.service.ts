@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user-dto';
 import { CreateUserDto } from 'src/users/dtos/create-user-dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user/user';
+import { User } from './entities/user';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/enums/role/role';

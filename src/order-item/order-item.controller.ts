@@ -5,7 +5,7 @@ import { UpdateOrderItemDto } from './dto/update-order-item.dto';
 import { Request } from 'express';
 import { Roles } from 'src/decorators/roles/roles.decorator';
 import { Role } from 'src/enums/role/role';
-import { User } from 'src/users/entities/user/user';
+import { User } from 'src/users/entities/user';
 
 @Controller('order-item')
 export class OrderItemController {
