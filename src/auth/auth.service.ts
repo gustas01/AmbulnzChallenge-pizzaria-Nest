@@ -34,7 +34,7 @@ export class AuthService {
     return user;
   }
 
-  verifyToken(token: string) {
+  verifyToken(token: string): User {
     try {
       return this.jwtService.verify(token, {
         issuer: 'login',
