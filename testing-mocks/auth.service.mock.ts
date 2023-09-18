@@ -6,7 +6,7 @@ export const authServiceMock = {
   provide: AuthService,
   useValue: {
     verifyToken: jest.fn().mockReturnValue(JwtPayloadMock),
-    signIn: jest.fn().mockResolvedValueOnce({ token: tokenMock }),
+    signIn: jest.fn().mockResolvedValue({ token: tokenMock }),
     register: jest.fn().mockResolvedValue('Usuário criado com sucesso!'),
   },
 };

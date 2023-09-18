@@ -23,11 +23,15 @@ describe('AuthService', () => {
   });
 
   it('should verify token', () => {
+    jest.spyOn(jwtServiceMock.useValue, 'verify').mockReturnValue(JwtPayloadMock);
     const payloadToken = service.verifyToken(tokenMock);
     expect(payloadToken).toEqual(JwtPayloadMock);
   });
 
   it('should throw an exception while verifying token', () => {
+    jest.spyOn(jwtServiceMock.useValue, 'verify').mockImplementationOnce(() => {
+      throw new Error();
+    });
     expect(() => service.verifyToken(tokenMock)).toThrow('Usuário inválido');
   });
 
@@ -37,6 +41,7 @@ describe('AuthService', () => {
   });
 
   it('should signIn successfully', async () => {
+    jest.spyOn(jwtServiceMock.useValue, 'verify').mockReturnValue(JwtPayloadMock);
     const { username, password_decrypted } = userDataMock;
     const tokenPayload: User = service.verifyToken(
       await service.signIn({ username, password: password_decrypted }),
