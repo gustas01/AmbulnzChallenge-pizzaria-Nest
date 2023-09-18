@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
     request['user'] = payload;
 
     //caso a rota exija uma role de maior nível
-    if (!payload.roles.some((role) => requiredRoles.includes(role)))
+    if (!payload.roles?.some((role) => requiredRoles.includes(role)))
       throw new ForbiddenException('Usuário sem previlégios de acesso');
 
     return true;
