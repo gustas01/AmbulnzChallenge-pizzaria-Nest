@@ -4,31 +4,35 @@ import { QueryFailedError } from 'typeorm';
 
 @Catch(QueryFailedError)
 export class UserQueryFailedErrorFilter<T> implements ExceptionFilter {
+  code: string;
+  message: string;
+  status: HttpStatus;
+
   catch(exception: QueryFailedError, host: ArgumentsHost) {
     const response: Response = host.switchToHttp().getResponse<Response>();
     const request: Request = host.switchToHttp().getRequest<Request>();
 
-    let status: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message: string = exception.driverError.detail;
-    let code: string = '500';
+    this.status = HttpStatus.INTERNAL_SERVER_ERROR;
+    this.message = exception.driverError.detail;
+    this.code = '500';
 
     switch (exception.driverError?.code) {
       case '23505':
-        status = HttpStatus.UNPROCESSABLE_ENTITY;
-        message = `Username ${request.body.username} já existe!`;
-        code = exception.driverError?.code;
+        this.status = HttpStatus.UNPROCESSABLE_ENTITY;
+        this.message = `Username ${request.body.username} já existe!`;
+        this.code = '23505';
         break;
       default:
-        status = HttpStatus.SERVICE_UNAVAILABLE;
-        message = exception.message;
-        code = exception.driverError?.code;
+        this.status = HttpStatus.SERVICE_UNAVAILABLE;
+        this.message = exception.message;
+        this.code = exception.driverError?.code ?? this.code;
         break;
     }
 
-    response.status(status).json({
-      status,
-      message,
-      code,
+    response.status(this.status).json({
+      status: this.status,
+      message: this.message,
+      code: this.code,
       method: request.method,
       path: request.url,
       timestamp: new Date().toISOString(),
