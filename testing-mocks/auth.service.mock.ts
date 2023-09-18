@@ -2,7 +2,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { JwtPayloadMock } from './jwt-payload.mock';
 import { tokenMock } from './token.mock';
 
-export const AuthServiceMock = {
+export const authServiceMock = {
   provide: AuthService,
   useValue: {
     verifyToken: jest.fn().mockResolvedValue(JwtPayloadMock),

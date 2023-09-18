@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
-import { AuthServiceMock } from '../../testing-mocks/auth.service.mock';
+import { authServiceMock } from '../../testing-mocks/auth.service.mock';
 import { Response } from 'express';
 import { userDataMock } from '../../testing-mocks/user-data.mock';
 
@@ -10,7 +10,7 @@ describe('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [AuthServiceMock],
+      providers: [authServiceMock],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
