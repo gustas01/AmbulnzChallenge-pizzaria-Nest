@@ -21,7 +21,7 @@ describe('OrderItemController', () => {
   });
 
   it('should return all order-itens', () => {
-    expect(controller.findAll()).toEqual([orderItemMock]);
+    expect(controller.findAll(requestExpressMock)).toEqual([orderItemMock]);
   });
 
   it('should create an order-item', () => {
