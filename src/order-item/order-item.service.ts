@@ -1,11 +1,12 @@
-import { Injectable, NotFoundException, Req } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PizzasService } from 'src/pizzas/pizzas.service';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { UpdateOrderItemDto } from './dto/update-order-item.dto';
 import { OrderItem } from './entities/order-item.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PizzasService } from 'src/pizzas/pizzas.service';
 
+import { Order } from 'src/orders/entities/order';
 import { OrdersService } from 'src/orders/orders.service';
 import { User } from 'src/users/entities/user';
 
@@ -32,12 +33,12 @@ export class OrderItemService {
     return orderItem;
   }
 
-  async findAll() {
-    return this.orderItemRepository.find({ relations: { pizza: true } });
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} orderItem`;
+  async findAll(user: User) {
+    const order = await this.ordersService.findOne(user);
+    return this.orderItemRepository.find({
+      relations: { pizza: true, order: true },
+      where: { order } as FindOptionsWhere<Order>,
+    });
   }
 
   async update(id: string, updateOrderItemDto: UpdateOrderItemDto) {
@@ -45,7 +46,8 @@ export class OrderItemService {
     if (updateOrderItemDto.pizzaname)
       pizza = await this.pizzaService.findOne(updateOrderItemDto.pizzaname);
 
-    return this.orderItemRepository.update(id, { quantity: updateOrderItemDto.quantity, pizza });
+    await this.orderItemRepository.update(id, { quantity: updateOrderItemDto.quantity, pizza });
+    return { msg: 'Ordem atualizada com sucesso!' };
   }
 
   async delete(id: string) {

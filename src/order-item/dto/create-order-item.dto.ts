@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsInt, IsNotEmpty, IsPositive } from 'class-validator';
 
 export class CreateOrderItemDto {
   @IsNotEmpty()
@@ -6,5 +6,6 @@ export class CreateOrderItemDto {
 
   @IsNotEmpty()
   @IsInt()
+  @IsPositive()
   quantity: number;
 }

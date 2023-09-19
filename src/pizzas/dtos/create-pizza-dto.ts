@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsPositive, MaxLength, MinLength } from 'class-validator';
 
 export class CreatePizzaDto {
   @MinLength(3)
@@ -8,6 +8,7 @@ export class CreatePizzaDto {
 
   @IsNumber({ allowInfinity: false, allowNaN: false })
   @IsNotEmpty()
+  @IsPositive()
   price: number;
 
   @IsNotEmpty()

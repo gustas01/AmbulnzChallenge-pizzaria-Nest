@@ -1,4 +1,4 @@
-import { IsDecimal, IsNotEmpty, IsNumber, IsOptional, MaxLength, MinLength } from 'class-validator';
+import { IsNumber, IsOptional, IsPositive, MaxLength, MinLength } from 'class-validator';
 
 export class UpdatePizzaDto {
   @IsOptional()
@@ -8,6 +8,7 @@ export class UpdatePizzaDto {
 
   @IsOptional()
   @IsNumber({ allowInfinity: false, allowNaN: false })
+  @IsPositive()
   price: number;
 
   @IsOptional()
