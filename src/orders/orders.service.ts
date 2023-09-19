@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user';
-import { Order } from './entities/order';
 import { FindOptionsWhere, Repository } from 'typeorm';
+import { Order } from './entities/order';
 
 @Injectable()
 export class OrdersService {
   constructor(@InjectRepository(Order) private orderRepository: Repository<Order>) {}
 
-  create() {
+  async create() {
     return this.orderRepository.create();
   }
 

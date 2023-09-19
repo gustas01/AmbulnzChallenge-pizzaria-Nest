@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateUserDto } from './dtos/update-user-dto';
-import { CreateUserDto } from 'src/users/dtos/create-user-dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user';
-import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/enums/role/role';
 import { OrdersService } from 'src/orders/orders.service';
+import { CreateUserDto } from 'src/users/dtos/create-user-dto';
+import { Repository } from 'typeorm';
+import { UpdateUserDto } from './dtos/update-user-dto';
+import { User } from './entities/user';
 
 @Injectable()
 export class UsersService {
@@ -22,7 +22,7 @@ export class UsersService {
 
     let newUser: User = this.usersRepository.create({ ...user, order: [] });
     newUser.password = await bcrypt.hash(createUserDto.password, await bcrypt.genSalt(10));
-    newUser.order.unshift(this.orderService.create());
+    newUser.order.unshift(await this.orderService.create());
     newUser = await this.usersRepository.save(newUser);
 
     return newUser;
