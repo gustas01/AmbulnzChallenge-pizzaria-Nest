@@ -33,6 +33,8 @@ describe('AuthGuard', () => {
 
   it('should test route when the user do NOT have permission', () => {
     jest.spyOn(reflectorMock, 'getAllAndOverride').mockReturnValue(['ceo']);
-    expect(() => authGuard.canActivate(guardContextMock)).toThrow();
+    expect(() => authGuard.canActivate(guardContextMock)).toThrow(
+      'Usuário sem previlégios de acesso',
+    );
   });
 });

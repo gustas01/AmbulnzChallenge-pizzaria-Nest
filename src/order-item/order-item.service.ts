@@ -32,7 +32,7 @@ export class OrderItemService {
     return orderItem;
   }
 
-  findAll() {
+  async findAll() {
     return this.orderItemRepository.find({ relations: { pizza: true } });
   }
 
