@@ -17,6 +17,6 @@ export class OrdersService {
   }
 
   async findAll(user: User) {
-    return this.orderRepository.findOneBy({ user } as FindOptionsWhere<User>);
+    return this.orderRepository.find({ where: { user } as FindOptionsWhere<User> });
   }
 }
