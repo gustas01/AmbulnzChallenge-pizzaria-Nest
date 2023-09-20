@@ -1,12 +1,20 @@
-import { Controller, Delete, Get, Patch, Req, BadRequestException, UseFilters } from '@nestjs/common';
-import { Body } from '@nestjs/common';
-import { UpdateUserDto } from './dtos/update-user-dto';
-import { UsersService } from './users.service';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Req,
+  UseFilters,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { Roles } from 'src/decorators/roles/roles.decorator';
 import { Role } from 'src/enums/role/role';
-import { User } from './entities/user';
 import { UserQueryFailedErrorFilter } from 'src/filters/user-query-failed-error/user-query-failed-error.filter';
+import { UpdateUserDto } from './dtos/update-user-dto';
+import { User } from './entities/user';
+import { UsersService } from './users.service';
 
 @Controller('users')
 @UseFilters(UserQueryFailedErrorFilter)
@@ -34,6 +42,9 @@ export class UsersController {
   @Delete()
   async delete(@Req() request: Request) {
     const user: User = request['user'];
-    return this.userService.delete(user.id);
+    await this.userService.delete(user.id);
+    return {
+      msg: 'Usuário deletado com sucesso',
+    };
   }
 }
