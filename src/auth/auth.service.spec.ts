@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { jwtServiceMock } from '../../testing-mocks/jwt.service.mock';
-import { usersServiceMock } from '../../testing-mocks/users.service.mock';
-import { userDataMock } from '../../testing-mocks/user-data.mock';
-import { User } from '../users/entities/user';
-import { tokenMock } from '../../testing-mocks/token.mock';
 import { JwtPayloadMock } from '../../testing-mocks/jwt-payload.mock';
+import { jwtServiceMock } from '../../testing-mocks/jwt.service.mock';
+import { tokenMock } from '../../testing-mocks/token.mock';
+import { userDataMock } from '../../testing-mocks/user-data.mock';
+import { usersServiceMock } from '../../testing-mocks/users.service.mock';
+import { User } from '../users/entities/user';
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -52,14 +52,14 @@ describe('AuthService', () => {
     expect(tokenPayload.roles).toEqual(userDataMock.roles);
   });
 
-  it('should signIn throw an exception for wrong password', async () => {
+  it('should signIn throw an exception because wrong password', async () => {
     const { username } = userDataMock;
     expect(
       async () => await service.signIn({ username, password: 'wrongPassword' }),
     ).rejects.toThrow('Usuário ou senha inválidos!');
   });
 
-  it('should signIn throw an exception for non-existent user', async () => {
+  it('should signIn throw an exception because non-existent user', async () => {
     const { username, password_decrypted } = userDataMock;
     expect(
       async () => await service.signIn({ username, password: password_decrypted }),
