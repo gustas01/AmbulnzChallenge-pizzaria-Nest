@@ -4,11 +4,7 @@ import { userDataMock } from './user-data.mock';
 export const usersServiceMock = {
   provide: UsersService,
   useValue: {
-    findOne: jest
-      .fn()
-      .mockResolvedValueOnce(userDataMock)
-      .mockResolvedValueOnce(userDataMock)
-      .mockResolvedValue(null),
+    findOne: jest.fn().mockResolvedValue(userDataMock),
     create: jest.fn().mockResolvedValue(userDataMock),
   },
 };

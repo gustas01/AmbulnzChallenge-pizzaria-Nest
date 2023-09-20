@@ -60,6 +60,7 @@ describe('AuthService', () => {
   });
 
   it('should signIn throw an exception because non-existent user', async () => {
+    jest.spyOn(usersServiceMock.useValue, 'findOne').mockResolvedValueOnce(null);
     const { username, password_decrypted } = userDataMock;
     expect(
       async () => await service.signIn({ username, password: password_decrypted }),
