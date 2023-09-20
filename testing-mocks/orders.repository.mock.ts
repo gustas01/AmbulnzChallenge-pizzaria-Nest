@@ -6,7 +6,7 @@ export const ordersRepositoryMock = {
   provide: getRepositoryToken(Order),
   useValue: {
     create: jest.fn().mockReturnValue(ordersMock),
-    findOneBy: jest.fn().mockReturnValue(ordersMock),
-    find: jest.fn().mockReturnValue([ordersMock]),
+    findOneBy: jest.fn().mockResolvedValue(ordersMock),
+    find: jest.fn().mockResolvedValue([ordersMock]),
   },
 };

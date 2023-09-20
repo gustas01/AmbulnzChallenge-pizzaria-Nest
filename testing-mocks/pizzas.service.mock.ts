@@ -4,11 +4,11 @@ import { pizzaMock } from './pizza.mock';
 export const pizzasServiceMock = {
   provide: PizzasService,
   useValue: {
-    findAll: jest.fn().mockReturnValue([pizzaMock]),
-    findOne: jest.fn().mockReturnValue(pizzaMock),
-    create: jest.fn().mockReturnValue(pizzaMock),
-    update: jest.fn().mockReturnValue(pizzaMock),
-    delete: jest.fn().mockReturnValue({
+    findAll: jest.fn().mockResolvedValue([pizzaMock]),
+    findOne: jest.fn().mockResolvedValue(pizzaMock),
+    create: jest.fn().mockResolvedValue(pizzaMock),
+    update: jest.fn().mockResolvedValue(pizzaMock),
+    delete: jest.fn().mockResolvedValue({
       msg: 'Pizza deletada com sucesso!',
     }),
   },

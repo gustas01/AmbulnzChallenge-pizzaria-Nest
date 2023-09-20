@@ -20,24 +20,24 @@ describe('OrderItemController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should return all order-itens', () => {
-    expect(controller.findAll(requestExpressMock)).toEqual([orderItemMock]);
+  it('should return all order-itens', async () => {
+    expect(await controller.findAll(requestExpressMock)).toEqual([orderItemMock]);
   });
 
-  it('should create an order-item', () => {
+  it('should create an order-item', async () => {
     expect(
-      controller.create(requestExpressMock, {
+      await controller.create(requestExpressMock, {
         pizzaname: orderItemMock.pizza.name,
         quantity: orderItemMock.quantity,
       }),
     ).toEqual(orderItemMock);
   });
 
-  it('should update an order-item', () => {
-    expect(controller.update(orderItemMock.id, orderItemMock)).toEqual(orderItemMock);
+  it('should update an order-item', async () => {
+    expect(await controller.update(orderItemMock.id, orderItemMock)).toEqual(orderItemMock);
   });
 
-  it('should delete an order-item', () => {
-    expect(controller.delete(orderItemMock.id)).toEqual(orderItemMock);
+  it('should delete an order-item', async () => {
+    expect(await controller.delete(orderItemMock.id)).toEqual(orderItemMock);
   });
 });

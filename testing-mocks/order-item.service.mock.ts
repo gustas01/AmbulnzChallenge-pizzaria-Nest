@@ -4,9 +4,9 @@ import { orderItemMock } from './order-item.mock';
 export const orderItemServiceMock = {
   provide: OrderItemService,
   useValue: {
-    create: jest.fn().mockReturnValue(orderItemMock),
-    update: jest.fn().mockReturnValue(orderItemMock),
-    delete: jest.fn().mockReturnValue(orderItemMock),
-    findAll: jest.fn().mockReturnValue([orderItemMock]),
+    create: jest.fn().mockResolvedValue(orderItemMock),
+    update: jest.fn().mockResolvedValue(orderItemMock),
+    delete: jest.fn().mockResolvedValue(orderItemMock),
+    findAll: jest.fn().mockResolvedValue([orderItemMock]),
   },
 };

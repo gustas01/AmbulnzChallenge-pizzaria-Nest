@@ -6,9 +6,9 @@ export const orderItemRepositoryMock = {
   provide: getRepositoryToken(OrderItem),
   useValue: {
     create: jest.fn().mockReturnValue(orderItemMock),
-    save: jest.fn().mockReturnValue(orderItemMock),
-    find: jest.fn().mockReturnValue([orderItemMock]),
-    update: jest.fn().mockReturnValue(orderItemMock),
+    save: jest.fn().mockResolvedValue(orderItemMock),
+    find: jest.fn().mockResolvedValue([orderItemMock]),
+    update: jest.fn().mockResolvedValue(orderItemMock),
     delete: jest.fn(),
   },
 };
