@@ -6,5 +6,7 @@ export const usersServiceMock = {
   useValue: {
     findOne: jest.fn().mockResolvedValue(userDataMock),
     create: jest.fn().mockResolvedValue(userDataMock),
+    update: jest.fn().mockResolvedValue(userDataMock),
+    delete: jest.fn(),
   },
 };
