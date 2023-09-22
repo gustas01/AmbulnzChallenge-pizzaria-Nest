@@ -1,5 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { AuthService } from 'src/auth/auth.service';
 import { User } from 'src/users/entities/user';
 import * as request from 'supertest';
 import { userDataMock } from 'testing-mocks/user-data.mock';
@@ -7,6 +8,7 @@ import { AppModule } from '../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let authService: AuthService;
   let token: string;
 
   beforeAll(async () => {
@@ -15,6 +17,7 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    authService = app.get<AuthService>(AuthService);
     await app.init();
   });
 
@@ -43,6 +46,7 @@ describe('AppController (e2e)', () => {
       ?.split(';')[0];
 
     expect(token).toBeDefined();
+    expect(authService.verifyToken(token)).toBeTruthy();
     expect(typeof token).toEqual('string');
     expect(response.statusCode).toEqual(200);
   });
