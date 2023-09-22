@@ -6,7 +6,7 @@ import * as request from 'supertest';
 import { userDataMock } from 'testing-mocks/user-data.mock';
 import { AppModule } from '../src/app.module';
 
-describe('AppController (e2e)', () => {
+describe('App', () => {
   let app: INestApplication;
   let authService: AuthService;
   let token: string;
@@ -25,29 +25,31 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  it('should create a user', async () => {
-    const response = await request(app.getHttpServer()).post('/auth/register').send(userDataMock);
-    const body = response.body as User;
+  describe('AuthModule (e2e)', () => {
+    it('should create a user', async () => {
+      const response = await request(app.getHttpServer()).post('/auth/register').send(userDataMock);
+      const body = response.body as User;
 
-    expect(body?.username).toEqual(userDataMock.username);
-    expect(body?.name).toEqual(userDataMock.name);
-    expect(body?.roles).toEqual(userDataMock.roles);
-    expect(response.statusCode).toEqual(201);
-  });
+      expect(body?.username).toEqual(userDataMock.username);
+      expect(body?.name).toEqual(userDataMock.name);
+      expect(body?.roles).toEqual(userDataMock.roles);
+      expect(response.statusCode).toEqual(201);
+    });
 
-  it('should signIn', async () => {
-    const response = await request(app.getHttpServer()).post('/auth/login').send(userDataMock);
+    it('should signIn', async () => {
+      const response = await request(app.getHttpServer()).post('/auth/login').send(userDataMock);
 
-    const setCookieContent: string[] = response.header['set-cookie'];
+      const setCookieContent: string[] = response.header['set-cookie'];
 
-    token = setCookieContent
-      .find((el) => el.startsWith('token='))
-      ?.split('=')[1]
-      ?.split(';')[0];
+      token = setCookieContent
+        .find((el) => el.startsWith('token='))
+        ?.split('=')[1]
+        ?.split(';')[0];
 
-    expect(token).toBeDefined();
-    expect(authService.verifyToken(token)).toBeTruthy();
-    expect(typeof token).toEqual('string');
-    expect(response.statusCode).toEqual(200);
+      expect(token).toBeDefined();
+      expect(authService.verifyToken(token)).toBeTruthy();
+      expect(typeof token).toEqual('string');
+      expect(response.statusCode).toEqual(200);
+    });
   });
 });
