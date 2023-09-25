@@ -185,4 +185,19 @@ describe('App', () => {
       expect(body.msg).toEqual('Pizza deletada com sucesso!');
     });
   });
+
+  describe('UsersModule (e2e)', () => {
+    it('should findOne User', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/users')
+        .set('Cookie', `token=${tokenUser}`);
+
+      const body: User = response.body;
+
+      expect(response.statusCode).toEqual(200);
+      expect(body.name).toEqual(userDataMock.name);
+      expect(body.roles).toEqual(userDataMock.roles);
+      expect(body.username).toEqual(userDataMock.username);
+    });
+  });
 });
