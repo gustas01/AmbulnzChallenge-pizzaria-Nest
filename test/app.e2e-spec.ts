@@ -2,8 +2,11 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as cookieParser from 'cookie-parser';
 import { AuthService } from 'src/auth/auth.service';
+import { Pizza } from 'src/pizzas/entities/pizza';
 import { User } from 'src/users/entities/user';
 import * as request from 'supertest';
+import { ExceptionTypeMock } from 'testing-mocks/exception-type.mock';
+import { pizzaMock } from 'testing-mocks/pizza.mock';
 import { userDataMock } from 'testing-mocks/user-data.mock';
 import { userCEODataMock } from 'testing-mocks/user.ceo-data.mock';
 import { AppModule } from '../src/app.module';
@@ -83,6 +86,33 @@ describe('App', () => {
       expect(authService.verifyToken(tokenCEO)).toBeTruthy();
       expect(typeof tokenCEO).toEqual('string');
       expect(response.statusCode).toEqual(200);
+    });
+  });
+
+  describe('PizzasModule (e2e)', () => {
+    it('should try to create a Pizza and fail due to insufficient permissions', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/pizzas')
+        .send(pizzaMock)
+        .set('Cookie', `token=${tokenUser}`);
+      const body: ExceptionTypeMock = response.body;
+
+      expect(body.message).toEqual('Usuário sem previlégios de acesso');
+      expect(body.error).toEqual('Forbidden');
+      expect(body.statusCode).toEqual(403);
+    });
+
+    it('should create a Pizza', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/pizzas')
+        .send(pizzaMock)
+        .set('Cookie', `token=${tokenCEO}`);
+      const body: Pizza = response.body;
+
+      expect(body.id).toEqual(pizzaMock.id);
+      expect(body.ingredients).toEqual(pizzaMock.ingredients);
+      expect(body.name).toEqual(pizzaMock.name);
+      expect(body.price).toEqual(pizzaMock.price);
     });
   });
 });
