@@ -117,6 +117,16 @@ describe('App', () => {
       expect(body.price).toEqual(pizzaMock.price);
     });
 
+    it('should findAll Pizzas', async () => {
+      const response = await request(app.getHttpServer()).get('/pizzas');
+
+      const body: Pizza[] = response.body;
+
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.statusCode).toEqual(200);
+      expect(body).toContainEqual(pizzaMock);
+    });
+
     it('should try to UPDATE a Pizza and fail due to insufficient permissions', async () => {
       const response = await request(app.getHttpServer())
         .patch(`/pizzas/${pizzaMock.id}`)
