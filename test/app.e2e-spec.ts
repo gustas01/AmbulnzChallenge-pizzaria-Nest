@@ -127,6 +127,15 @@ describe('App', () => {
       expect(body).toContainEqual(pizzaMock);
     });
 
+    it('should findOne Pizzas', async () => {
+      const response = await request(app.getHttpServer()).get(`/pizzas/${pizzaMock.name}`);
+
+      const body: Pizza = response.body;
+
+      expect(response.statusCode).toEqual(200);
+      expect(body).toEqual(pizzaMock);
+    });
+
     it('should try to UPDATE a Pizza and fail due to insufficient permissions', async () => {
       const response = await request(app.getHttpServer())
         .patch(`/pizzas/${pizzaMock.id}`)
