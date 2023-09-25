@@ -90,50 +90,54 @@ describe('App', () => {
   });
 
   describe('PizzasModule (e2e)', () => {
-    it('should try to create a Pizza and fail due to insufficient permissions', async () => {
+    it('should try to CREATE a Pizza and fail due to insufficient permissions', async () => {
       const response = await request(app.getHttpServer())
         .post('/pizzas')
         .send(pizzaMock)
         .set('Cookie', `token=${tokenUser}`);
       const body: ExceptionTypeMock = response.body;
 
+      expect(response.statusCode).toEqual(403);
       expect(body.message).toEqual('Usuário sem previlégios de acesso');
       expect(body.error).toEqual('Forbidden');
       expect(body.statusCode).toEqual(403);
     });
 
-    it('should create a Pizza', async () => {
+    it('should CREATE a Pizza', async () => {
       const response = await request(app.getHttpServer())
         .post('/pizzas')
         .send(pizzaMock)
         .set('Cookie', `token=${tokenCEO}`);
       const body: Pizza = response.body;
 
+      expect(response.statusCode).toEqual(201);
       expect(body.id).toEqual(pizzaMock.id);
       expect(body.ingredients).toEqual(pizzaMock.ingredients);
       expect(body.name).toEqual(pizzaMock.name);
       expect(body.price).toEqual(pizzaMock.price);
     });
 
-    it('should try to update a Pizza and fail due to insufficient permissions', async () => {
+    it('should try to UPDATE a Pizza and fail due to insufficient permissions', async () => {
       const response = await request(app.getHttpServer())
         .patch(`/pizzas/${pizzaMock.id}`)
         .send({ price: 5 })
         .set('Cookie', `token=${tokenUser}`);
       const body: ExceptionTypeMock = response.body;
 
+      expect(response.statusCode).toEqual(403);
       expect(body.message).toEqual('Usuário sem previlégios de acesso');
       expect(body.error).toEqual('Forbidden');
       expect(body.statusCode).toEqual(403);
     });
 
-    it('should update a Pizza', async () => {
+    it('should UPDATE a Pizza', async () => {
       const response = await request(app.getHttpServer())
         .patch(`/pizzas/${pizzaMock.id}`)
         .send({ price: 5 })
         .set('Cookie', `token=${tokenCEO}`);
       const body: Pizza = response.body;
 
+      expect(response.statusCode).toEqual(200);
       expect(body.id).toEqual(pizzaMock.id);
       expect(body.ingredients).toEqual(pizzaMock.ingredients);
       expect(body.name).toEqual(pizzaMock.name);
