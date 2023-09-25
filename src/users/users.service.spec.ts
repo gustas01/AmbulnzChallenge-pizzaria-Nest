@@ -39,6 +39,6 @@ describe('UsersService', () => {
   });
 
   it('should generate the array of roles', () => {
-    expect(service.roleToRoles(userDataMock.role)).toEqual(['user', 'admin']);
+    expect(service.roleToRoles(userDataMock.role)).toEqual(['user']);
   });
 });

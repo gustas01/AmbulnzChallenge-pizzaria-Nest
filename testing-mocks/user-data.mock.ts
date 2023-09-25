@@ -6,8 +6,8 @@ export const userDataMock = {
   username: 'fulanoUsername',
   password_decrypted: '123Aa!',
   password: '$2b$10$Tl6RPNTSKTUw9Un1YJR39eh/iQveWWYbZK.X/zSU4OE.ZvdgrVZv2',
-  roles: ['user', 'admin'],
-  role: Role.ADMIN,
+  roles: ['user'],
+  role: Role.USER,
   order: [
     {
       id: '215a67fb-19b0-4f4d-8ca9-447a90cf89ba',
