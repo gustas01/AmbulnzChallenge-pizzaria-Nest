@@ -199,5 +199,24 @@ describe('App', () => {
       expect(body.roles).toEqual(userDataMock.roles);
       expect(body.username).toEqual(userDataMock.username);
     });
+
+    it('should UPDATE User', async () => {
+      const response = await request(app.getHttpServer())
+        .patch('/users')
+        .set('Cookie', `token=${tokenUser}`)
+        .send({ name: `${userDataMock.name} EDITADO` });
+
+      const body: User = response.body;
+
+      expect(response.statusCode).toEqual(200);
+      expect(body.name).toEqual(`${userDataMock.name} EDITADO`);
+      expect(body.roles).toEqual(userDataMock.roles);
+      expect(body.username).toEqual(userDataMock.username);
+
+      await request(app.getHttpServer())
+        .patch('/users')
+        .set('Cookie', `token=${tokenUser}`)
+        .send({ name: userDataMock.name });
+    });
   });
 });
