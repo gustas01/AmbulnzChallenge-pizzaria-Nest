@@ -143,5 +143,27 @@ describe('App', () => {
       expect(body.name).toEqual(pizzaMock.name);
       expect(body.price).toEqual(5);
     });
+
+    it('should try to DELETE a Pizza and fail due to insufficient permissions', async () => {
+      const response = await request(app.getHttpServer())
+        .delete(`/pizzas/${pizzaMock.id}`)
+        .set('Cookie', `token=${tokenUser}`);
+      const body: ExceptionTypeMock = response.body;
+
+      expect(response.statusCode).toEqual(403);
+      expect(body.message).toEqual('Usuário sem previlégios de acesso');
+      expect(body.error).toEqual('Forbidden');
+      expect(body.statusCode).toEqual(403);
+    });
+
+    it('should DELETE a Pizza', async () => {
+      const response = await request(app.getHttpServer())
+        .delete(`/pizzas/${pizzaMock.id}`)
+        .set('Cookie', `token=${tokenCEO}`);
+      const body = response.body;
+
+      expect(response.statusCode).toEqual(200);
+      expect(body.msg).toEqual('Pizza deletada com sucesso!');
+    });
   });
 });
