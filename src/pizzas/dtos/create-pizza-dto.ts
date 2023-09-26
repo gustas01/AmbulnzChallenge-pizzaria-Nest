@@ -7,7 +7,6 @@ export class CreatePizzaDto {
   name: string;
 
   @IsNumber({ allowInfinity: false, allowNaN: false })
-  @IsNotEmpty()
   @IsPositive()
   price: number;
 
