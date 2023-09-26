@@ -273,8 +273,6 @@ describe('App', () => {
 
       const body: OrderItem = response.body;
 
-      delete newPizza.body.id;
-
       const user = await usersService.findOne(userDataMock.username);
       const order = await ordersService.findOne(user);
 
@@ -311,8 +309,8 @@ describe('App', () => {
 
       const bodyAllOrderItens: OrderItem[] = AllOrderItens.body;
       const updatedOrderItem = bodyAllOrderItens.filter((el) => el.id === orderItem.body.id);
-      console.log(updatedOrderItem[0].id);
 
+      expect(response.statusCode).toEqual(200);
       expect(updatedOrderItem[0].quantity).toEqual(5);
       expect(response.body.msg).toEqual('Ordem atualizada com sucesso!');
     });
