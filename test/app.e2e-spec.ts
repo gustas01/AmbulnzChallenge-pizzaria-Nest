@@ -293,5 +293,28 @@ describe('App', () => {
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body).toBeTruthy();
     });
+
+    it('should UPDATE orderItem', async () => {
+      const orderItem = await request(app.getHttpServer())
+        .post('/order-item')
+        .set('Cookie', `token=${tokenUser}`)
+        .send({ pizzaname: orderItemMock.pizza.name, quantity: orderItemMock.quantity });
+
+      const response = await request(app.getHttpServer())
+        .patch(`/order-item/${orderItem.body.id}`)
+        .set('Cookie', `token=${tokenUser}`)
+        .send({ quantity: 5 });
+
+      const AllOrderItens = await request(app.getHttpServer())
+        .get('/order-item')
+        .set('Cookie', `token=${tokenUser}`);
+
+      const bodyAllOrderItens: OrderItem[] = AllOrderItens.body;
+      const updatedOrderItem = bodyAllOrderItens.filter((el) => el.id === orderItem.body.id);
+      console.log(updatedOrderItem[0].id);
+
+      expect(updatedOrderItem[0].quantity).toEqual(5);
+      expect(response.body.msg).toEqual('Ordem atualizada com sucesso!');
+    });
   });
 });
