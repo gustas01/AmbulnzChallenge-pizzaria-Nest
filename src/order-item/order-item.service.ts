@@ -29,7 +29,6 @@ export class OrderItemService {
     newOrderItem.order = await this.ordersService.findOne(user);
 
     const orderItem = await this.orderItemRepository.save(newOrderItem);
-    delete orderItem.pizza.id;
     return orderItem;
   }
 
@@ -57,6 +56,9 @@ export class OrderItemService {
   }
 
   async delete(id: string) {
+    const orderItem = await this.orderItemRepository.findOneBy({ id });
+    if (!orderItem) throw new NotFoundException('ID inválido');
+
     await this.orderItemRepository.delete(id);
     return { msg: 'Item apagado!' };
   }
