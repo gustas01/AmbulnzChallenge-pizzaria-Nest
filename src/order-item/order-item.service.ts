@@ -45,8 +45,10 @@ export class OrderItemService {
       throw new BadRequestException('Nenhuma informação fornecida para atualização!');
 
     let pizza = undefined;
-    if (updateOrderItemDto.pizzaname)
+    if (updateOrderItemDto.pizzaname) {
       pizza = await this.pizzaService.findOne(updateOrderItemDto.pizzaname);
+      if (!pizza) throw new NotFoundException('Pizza não encontrada');
+    }
 
     const orderItem = await this.orderItemRepository.findOneBy({ id });
     if (!orderItem) throw new NotFoundException('ID inválido');

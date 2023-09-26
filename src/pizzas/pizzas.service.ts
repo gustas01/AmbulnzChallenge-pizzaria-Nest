@@ -45,6 +45,9 @@ export class PizzasService {
   }
 
   async delete(id: number) {
+    const orderItem = await this.pizzaRepository.findOneBy({ id });
+    if (!orderItem) throw new NotFoundException('Pizza não encontrada');
+
     await this.pizzaRepository.delete(id);
     return { msg: 'Pizza deletada com sucesso!' };
   }
