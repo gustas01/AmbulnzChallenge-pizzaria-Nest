@@ -2,12 +2,14 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as cookieParser from 'cookie-parser';
 import { AuthService } from 'src/auth/auth.service';
+import { OrderItem } from 'src/order-item/entities/order-item.entity';
 import { OrdersService } from 'src/orders/orders.service';
 import { Pizza } from 'src/pizzas/entities/pizza';
 import { User } from 'src/users/entities/user';
 import { UsersService } from 'src/users/users.service';
 import * as request from 'supertest';
 import { ExceptionTypeMock } from 'testing-mocks/exception-type.mock';
+import { orderItemMock } from 'testing-mocks/order-item.mock';
 import { pizzaMock } from 'testing-mocks/pizza.mock';
 import { userDataMock } from 'testing-mocks/user-data.mock';
 import { userCEODataMock } from 'testing-mocks/user.ceo-data.mock';
@@ -235,6 +237,46 @@ describe('App', () => {
       expect(response.statusCode).toEqual(200);
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body).toBeTruthy();
+    });
+  });
+
+  describe('OrderItemModule (e2e)', () => {
+    it('should try to create a Order-Item and fail due to Pizza not found', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/order-item')
+        .set('Cookie', `token=${tokenUser}`)
+        .send({ pizzaname: orderItemMock.pizza.name, quantity: orderItemMock.quantity });
+
+      const body: ExceptionTypeMock = response.body;
+
+      expect(response.statusCode).toEqual(404);
+      expect(body.message).toEqual('Pizza não encontrada');
+      expect(body.error).toEqual('Not Found');
+      expect(body.statusCode).toEqual(404);
+    });
+
+    it('should create a Order-Item', async () => {
+      const newPizza = await request(app.getHttpServer())
+        .post('/pizzas')
+        .send(pizzaMock)
+        .set('Cookie', `token=${tokenCEO}`);
+
+      const response = await request(app.getHttpServer())
+        .post('/order-item')
+        .set('Cookie', `token=${tokenUser}`)
+        .send({ pizzaname: orderItemMock.pizza.name, quantity: orderItemMock.quantity });
+
+      const body: OrderItem = response.body;
+
+      delete newPizza.body.id;
+
+      const user = await usersService.findOne(userDataMock.username);
+      const order = await ordersService.findOne(user);
+
+      expect(response.statusCode).toEqual(201);
+      expect(body.pizza).toEqual(newPizza.body);
+      expect(body.order.id).toEqual(order.id);
+      expect(body.quantity).toEqual(orderItemMock.quantity);
     });
   });
 });
