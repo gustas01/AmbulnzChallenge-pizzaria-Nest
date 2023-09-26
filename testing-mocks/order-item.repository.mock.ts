@@ -10,5 +10,6 @@ export const orderItemRepositoryMock = {
     find: jest.fn().mockResolvedValue([orderItemMock]),
     update: jest.fn().mockResolvedValue(orderItemMock),
     delete: jest.fn(),
+    findOneBy: jest.fn().mockResolvedValue(orderItemMock),
   },
 };
