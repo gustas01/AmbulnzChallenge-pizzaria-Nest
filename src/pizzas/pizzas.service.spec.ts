@@ -28,7 +28,7 @@ describe('PizzasService', () => {
   });
 
   it('should findOne throw a exception because non-existent pizza', () => {
-    jest.spyOn(pizzasRepositoryMock.useValue, 'findOneBy').mockReturnValueOnce(undefined);
+    jest.spyOn(pizzasRepositoryMock.useValue, 'findOneBy').mockResolvedValueOnce(null);
     expect(async () => await service.findOne(pizzaMock.name)).rejects.toThrow(
       'Pizza não encontrada',
     );
@@ -39,10 +39,30 @@ describe('PizzasService', () => {
   });
 
   it('should update a pizza', async () => {
-    expect(await service.update(pizzaMock.id, pizzaMock)).toEqual(pizzaMock);
+    expect(await service.update(pizzaMock.id, pizzaMock)).toEqual({
+      msg: 'Pizza atualizada com sucesso!',
+    });
+  });
+
+  it('should update a pizza throw a exception because non-existent pizza', async () => {
+    jest.spyOn(pizzasRepositoryMock.useValue, 'findOneBy').mockResolvedValueOnce(null);
+    expect(async () => await service.update(pizzaMock.id, pizzaMock)).rejects.toThrow(
+      'Pizza não encontrada',
+    );
+  });
+
+  it('should update a pizza throw a exception because non-existent data in updatePizzaDto', async () => {
+    expect(async () => await service.update(pizzaMock.id, {})).rejects.toThrow(
+      'Nenhuma informação fornecida para atualização!',
+    );
   });
 
   it('should delete a pizza', async () => {
     expect(await service.delete(pizzaMock.id)).toEqual({ msg: 'Pizza deletada com sucesso!' });
+  });
+
+  it('should delete a pizza throw a exception because non-existent pizza', async () => {
+    jest.spyOn(pizzasRepositoryMock.useValue, 'findOneBy').mockResolvedValueOnce(null);
+    expect(async () => await service.delete(pizzaMock.id)).rejects.toThrow('Pizza não encontrada');
   });
 });

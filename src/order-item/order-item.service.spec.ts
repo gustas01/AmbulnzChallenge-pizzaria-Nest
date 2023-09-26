@@ -43,13 +43,42 @@ describe('OrderItemService', () => {
     expect(orderItems).toEqual([orderItemMock]);
   });
 
-  it('should update an orderItem', () => {
-    service.update(orderItemMock.id, orderItemMock);
+  it('should update an orderItem', async () => {
+    expect(await service.update(orderItemMock.id, orderItemMock)).toEqual({
+      msg: 'Ordem atualizada com sucesso!',
+    });
   });
 
-  it('should delete an orderItem', async () => {
-    const deleteOrderItemResult = await service.delete(orderItemMock.id);
+  it('should update an orderItem throw a exception because non-existent data in updateOrderItemDto', async () => {
+    expect(async () => await service.update(orderItemMock.id, {})).rejects.toThrow(
+      'Nenhuma informação fornecida para atualização!',
+    );
+  });
 
-    expect(deleteOrderItemResult).toEqual({ msg: 'Item apagado!' });
+  it('should update an orderItem throw a exception because non-existent pizza', async () => {
+    jest.spyOn(pizzasServiceMock.useValue, 'findOne').mockResolvedValueOnce(null);
+    expect(
+      async () =>
+        await service.update(orderItemMock.id, {
+          pizzaname: orderItemMock.pizza.name,
+          ...orderItemMock,
+        }),
+    ).rejects.toThrow('Pizza não encontrada');
+  });
+
+  it('should update orderItem throw a exception because non-existent orderItem', async () => {
+    jest.spyOn(orderItemRepositoryMock.useValue, 'findOneBy').mockResolvedValueOnce(null);
+    expect(async () => await service.update(orderItemMock.id, orderItemMock)).rejects.toThrow(
+      'ID inválido',
+    );
+  });
+
+  it('should delete a orderItem', async () => {
+    expect(await service.delete(orderItemMock.id)).toEqual({ msg: 'Item apagado!' });
+  });
+
+  it('should delete a orderItem throw a exception because non-existent orderItem', async () => {
+    jest.spyOn(orderItemRepositoryMock.useValue, 'findOneBy').mockResolvedValueOnce(null);
+    expect(async () => await service.delete(orderItemMock.id)).rejects.toThrow('ID inválido');
   });
 });
