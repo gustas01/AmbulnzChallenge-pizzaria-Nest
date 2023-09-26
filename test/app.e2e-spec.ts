@@ -314,5 +314,34 @@ describe('App', () => {
       expect(updatedOrderItem[0].quantity).toEqual(5);
       expect(response.body.msg).toEqual('Ordem atualizada com sucesso!');
     });
+
+    it('should DELETE an OrderItem', async () => {
+      const orderItem = await request(app.getHttpServer())
+        .post('/order-item')
+        .set('Cookie', `token=${tokenUser}`)
+        .send({ pizzaname: orderItemMock.pizza.name, quantity: orderItemMock.quantity });
+
+      let allOrderItens = await request(app.getHttpServer())
+        .get('/order-item')
+        .set('Cookie', `token=${tokenUser}`);
+
+      let orderItens: OrderItem[] = allOrderItens.body;
+
+      expect(orderItens).toContainEqual(orderItem.body);
+
+      const response = await request(app.getHttpServer())
+        .delete(`/order-item/${orderItens[0].id}`)
+        .set('Cookie', `token=${tokenUser}`);
+
+      allOrderItens = await request(app.getHttpServer())
+        .get('/order-item')
+        .set('Cookie', `token=${tokenUser}`);
+
+      orderItens = allOrderItens.body;
+
+      expect(response.statusCode).toEqual(200);
+      expect(response.body.msg).toEqual('Item apagado!');
+      expect(orderItens).not.toContainEqual(orderItem.body);
+    });
   });
 });
