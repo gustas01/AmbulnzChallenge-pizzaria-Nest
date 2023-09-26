@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PizzasService } from 'src/pizzas/pizzas.service';
 import { FindOptionsWhere, Repository } from 'typeorm';
@@ -42,9 +42,15 @@ export class OrderItemService {
   }
 
   async update(id: string, updateOrderItemDto: UpdateOrderItemDto) {
+    if (!Object.keys(updateOrderItemDto).length)
+      throw new BadRequestException('Nenhuma informação fornecida para atualização!');
+
     let pizza = undefined;
     if (updateOrderItemDto.pizzaname)
       pizza = await this.pizzaService.findOne(updateOrderItemDto.pizzaname);
+
+    const orderItem = await this.orderItemRepository.findOneBy({ id });
+    if (!orderItem) throw new NotFoundException('ID inválido');
 
     await this.orderItemRepository.update(id, { quantity: updateOrderItemDto.quantity, pizza });
     return { msg: 'Ordem atualizada com sucesso!' };

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePizzaDto } from './dtos/create-pizza-dto';
@@ -32,8 +32,16 @@ export class PizzasService {
   }
 
   async update(id: number, updatePizzaDto: Partial<UpdatePizzaDto>) {
+    if (!Object.keys(updatePizzaDto).length)
+      throw new BadRequestException('Nenhuma informação fornecida para atualização!');
+
+    const pizza = await this.pizzaRepository.findOneBy({ id });
+
+    if (!pizza) throw new NotFoundException('Pizza não encontrada');
+
     await this.pizzaRepository.update(id, updatePizzaDto);
-    return this.pizzaRepository.findOneBy({ id });
+
+    return { msg: 'Pizza atualizada com sucesso!' };
   }
 
   async delete(id: number) {
