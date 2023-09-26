@@ -2,8 +2,10 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as cookieParser from 'cookie-parser';
 import { AuthService } from 'src/auth/auth.service';
+import { OrdersService } from 'src/orders/orders.service';
 import { Pizza } from 'src/pizzas/entities/pizza';
 import { User } from 'src/users/entities/user';
+import { UsersService } from 'src/users/users.service';
 import * as request from 'supertest';
 import { ExceptionTypeMock } from 'testing-mocks/exception-type.mock';
 import { pizzaMock } from 'testing-mocks/pizza.mock';
@@ -14,6 +16,8 @@ import { AppModule } from '../src/app.module';
 describe('App', () => {
   let app: INestApplication;
   let authService: AuthService;
+  let usersService: UsersService;
+  let ordersService: OrdersService;
   let tokenUser: string;
   let tokenCEO: string;
 
@@ -24,6 +28,8 @@ describe('App', () => {
 
     app = moduleFixture.createNestApplication();
     authService = app.get<AuthService>(AuthService);
+    usersService = app.get<UsersService>(UsersService);
+    ordersService = app.get<OrdersService>(OrdersService);
     app.use(cookieParser());
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     await app.init();
@@ -217,6 +223,18 @@ describe('App', () => {
         .patch('/users')
         .set('Cookie', `token=${tokenUser}`)
         .send({ name: userDataMock.name });
+    });
+  });
+
+  describe('OrdersModule (e2e)', () => {
+    it('should findAll orders', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/orders')
+        .set('Cookie', `token=${tokenUser}`);
+
+      expect(response.statusCode).toEqual(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body).toBeTruthy();
     });
   });
 });
