@@ -162,7 +162,12 @@ describe('App', () => {
         .patch(`/pizzas/${pizzaMock.id}`)
         .send({ price: 5 })
         .set('Cookie', `token=${tokenCEO}`);
-      const body: Pizza = response.body;
+
+      const newPizza = await request(app.getHttpServer())
+        .get(`/pizzas/${pizzaMock.name}`)
+        .set('Cookie', `token=${tokenCEO}`);
+
+      const body: Pizza = newPizza.body;
 
       expect(response.statusCode).toEqual(200);
       expect(body.id).toEqual(pizzaMock.id);
