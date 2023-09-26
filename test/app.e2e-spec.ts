@@ -278,5 +278,15 @@ describe('App', () => {
       expect(body.order.id).toEqual(order.id);
       expect(body.quantity).toEqual(orderItemMock.quantity);
     });
+
+    it('should findAll orderItens', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/order-item')
+        .set('Cookie', `token=${tokenUser}`);
+
+      expect(response.statusCode).toEqual(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body).toBeTruthy();
+    });
   });
 });
