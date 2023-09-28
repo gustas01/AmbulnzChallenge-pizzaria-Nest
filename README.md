@@ -2,72 +2,55 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Sobre
+Projeto desenvolvido e testado como parte de um challenge de uma vaga na AmbulnzLLC, que se trata de um mini sistema monolítico backend de uma pizzaria.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Principais tecnologias utilizadas
+* NestJS (Node)
+* Typescript
+* TypeORM
+* PostgreSQL
+* Jest (para testes)
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
+## Como executar
+1º passo - Crie um arquivo na raiz do projeto chamado `.env` e coloque o conteúdo abaixo, e coloque todos os valores das variáveis de ambiente requisitada logo após o sinal de igualdade:
 ```bash
-$ npm install
+# A chave de segurança que será usada para gerar/verificar o token JWT de acesso de usuário
+JWT_SECRET_KEY=
+
+# O tempo de expiração do token JWT - ex: 7d, 1h, 10s
+JWT_EXPIRATION_DATE=
+
+# A porta em que a aplicação estará ouvindo as requisições
+APP_PORT=
+
+
+#  O local onde o banco de dados está hospedado. Caso seja no mesmo servidor onde a aplição está rodando, use 'localhost'
+DB_HOST=
+
+# A porta para conexão com o banco de dados
+DB_PORT=
+
+# O usuário para conexão com o banco
+DB_USERNAME=
+
+# A senha para conexão com o banco
+DB_PASSWORD=
+
+# O nome do banco de dados
+DB_DATABASE=
 ```
 
-## Running the app
+2º passo - Com o terminal aberto na raiz do projeto, execute o comando `npm install` para que todas as dependências sejam baixadas. <br><br>
+3º passo - No mesmo terminal, execute `npm run start:dev`para que o projeto seja executado em modos de desenvolvimento.
 
+## Testes
+Para os testes crie um arquivo também na raiz chamado `.env.test` e coloque o mesmo conteúdo do `.env` acima, e preencha os outros campos com os dados do BANCO DE TESTE.
+E para rodar os testes, execute os comando abaixo:
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
+# Testes unitários
 $ npm run test
 
-# e2e tests
+# Testes e2e
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
